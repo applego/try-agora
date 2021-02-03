@@ -35,7 +35,7 @@ Please make sure you share HTTPS one. Agora does not work over HTTP protocol.
 ### Errors on load
 
 > AgoraRTCError NOT_SUPPORTED: enumerateDevices() not supported.
-> AgoraRTCError WEB_SECURITY_RESTRICT: Your context is limited by web security, please try using https protocol or localhost.
+
 > AgoraRTCError WEB_SECURITY_RESTRICT: Your context is limited by web security, please try using https protocol or localhost.
 > → Run on `localhost`, or on `https://`.
 
