@@ -162,19 +162,9 @@ async function leaveCall() {
 }
 
 function renderButtons() {
-  const elJoin = querySelector("#join", HTMLButtonElement);
-  const elPublish = querySelector("#publish", HTMLButtonElement);
-  const elLeave = querySelector("#leave", HTMLButtonElement);
-
-  if (joined) {
-    elJoin.disabled = true;
-    elPublish.disabled = false;
-    elLeave.disabled = false;
-  } else {
-    elJoin.disabled = false;
-    elPublish.disabled = true;
-    elLeave.disabled = true;
-  }
+  const elJoin = querySelector("#join", HTMLButtonElement).disabled = joined;
+  const elPublish = querySelector("#publish", HTMLButtonElement).disabled = !joined;
+  const elLeave = querySelector("#leave", HTMLButtonElement).disabled = !joined;
 }
 
 /**
