@@ -5,7 +5,7 @@ to study
 
 Demo of Agora Voice Call.
 
-![screenshot](docs/screenshot.png)
+![screenshot](docs/screenshot.webp)
 
 ## Agora?
 
