@@ -48,6 +48,7 @@ const options = {
 const participants = new Set();
 
 let joined = false;
+let published = false;
 
 main();
 
@@ -69,11 +70,20 @@ function main() {
 
   querySelector("#publish", HTMLButtonElement).onclick = async () => {
     await publishTracks();
+    published = true;
+    renderButtons();
+  };
+
+  querySelector("#unpublish", HTMLButtonElement).onclick = async () => {
+    await unpublishTracks();
+    published = false;
+    renderButtons();
   };
 
   querySelector("#leave",HTMLButtonElement).onclick = async () => {
     await leaveCall();
     joined = false;
+    published = false;
     renderButtons();
   };
 }
@@ -104,6 +114,14 @@ async function publishTracks() {
   rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
   // Publish the local audio track to the channel.
   await rtc.client.publish([rtc.localAudioTrack]);
+}
+
+async function unpublishTracks() {
+  if (!rtc.client) {
+    throw new Error("Client must be ready");
+  }
+
+  await rtc.client.unpublish();
 }
 
 function startListening() {
@@ -162,9 +180,10 @@ async function leaveCall() {
 }
 
 function renderButtons() {
-  const elJoin = querySelector("#join", HTMLButtonElement).disabled = joined;
-  const elPublish = querySelector("#publish", HTMLButtonElement).disabled = !joined;
-  const elLeave = querySelector("#leave", HTMLButtonElement).disabled = !joined;
+  querySelector("#join", HTMLButtonElement).disabled = joined;
+  querySelector("#publish", HTMLButtonElement).disabled = !joined || published;
+  querySelector("#unpublish", HTMLButtonElement).disabled = !joined || !published;
+  querySelector("#leave", HTMLButtonElement).disabled = !joined;
 }
 
 /**
