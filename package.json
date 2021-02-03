@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint . && tsc",
     "serve:local": "browser-sync start --watch --no-ui --no-ghost-mode --server public",
-    "serve:proxy": "ngrok http 3012",
+    "serve:proxy": "ngrok http 3000",
     "start": "npm run serve:local"
   },
   "devDependencies": {
@@ -17,7 +17,8 @@
     "eslint-plugin-prettier": "^3.3.0",
     "git-cz": "^4.7.6",
     "ngrok": "^3.4.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
   },
   "dependencies": {}
 }
