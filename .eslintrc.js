@@ -5,5 +5,6 @@ module.exports = {
   extends: "./node_modules/@ginpei/eslintrc/.eslintrc.js",
   rules: {
     "import/extensions": ["error", "always"],
+    "@typescript-eslint/ban-ts-comment":"warn",
   },
 };
