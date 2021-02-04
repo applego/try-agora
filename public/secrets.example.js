@@ -1,4 +1,4 @@
-/ Project Management > Edit > Basic Info > App ID
+// Project Management > Edit > Basic Info > App ID
 // https://console.agora.io/projects
 export const appId = "";
 
