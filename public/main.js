@@ -43,16 +43,20 @@ const state = {
 
   joined: false,
 
+  /**
+   * For the local audio track.
+   * @type {IMicrophoneAudioTrack | null}
+   */
+  localAudioTrack: null,
+
   /** @type {Set<IAgoraRTCRemoteUser>} */
   participants: new Set(),
 
   published: false,
 
-  /**
-   * For the local audio track.
-   * @type {IMicrophoneAudioTrack | null
-   */
-  localAudioTrack: null,
+
+  /** @type {Set<IAgoraRTCRemoteUser>} */
+  speakers: new Set(),
 };
 
 // ----------------------------------------------------------------
@@ -72,8 +76,18 @@ function main() {
   renderUserId(state);
   renderParticipants(state);
 
-  client.on("user-published", async (user, mediaType) => {
+  client.on("user-joined", async (user) => {
     state.participants.add(user);
+    renderParticipants(state);
+  });
+
+  client.on("user-left", async (user) => {
+    state.participants.delete(user);
+    renderParticipants(state);
+  });
+
+  client.on("user-published", async (user, mediaType) => {
+    state.speakers.add(user);
     renderParticipants(state);
 
     // Subscribe to a remote user.
@@ -93,7 +107,7 @@ function main() {
   });
 
   client.on("user-unpublished", (user) => {
-    state.participants.delete(user);
+    state.speakers.delete(user);
     renderParticipants(state);
 
     // Get the dynamically created DIV container.
