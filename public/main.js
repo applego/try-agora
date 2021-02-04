@@ -198,7 +198,7 @@ async function unpublishTracks() {
 }
 
 async function leaveCall() {
-  const { client } = rtc;
+  const { client } = state;
   if (!client) {
     throw new Error("Client must be ready");
   }
