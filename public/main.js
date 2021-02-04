@@ -76,15 +76,15 @@ function main() {
   renderUserId(state);
   renderParticipants(state);
 
-  querySelector("#join", HTMLButtonElement).onclick = () => onJoinClick();
-  querySelector("#publish", HTMLButtonElement).onclick = () => onPublishClick();
-  querySelector("#unpublish", HTMLButtonElement).onclick = () => onUnpublishClick();
-  querySelector("#leave", HTMLButtonElement).onclick = () => onLeaveClick();
+  querySelector("#join", HTMLButtonElement).onclick = onJoinClick;
+  querySelector("#leave", HTMLButtonElement).onclick = onLeaveClick;
+  querySelector("#publish", HTMLButtonElement).onclick = onPublishClick;
+  querySelector("#unpublish", HTMLButtonElement).onclick = onUnpublishClick;
 
-  client.on("user-joined", (user) => onAgoraUserJoined(user));
-  client.on("user-left", (user) => onAgoraUserLeft(user));
-  client.on("user-published", (user, mediaType) => onAgoraUserPublished(user, mediaType));
-  client.on("user-unpublished", (user) => onAgoraUserUnpublished(user));
+  client.on("user-joined", onAgoraUserJoined);
+  client.on("user-left",  onAgoraUserLeft);
+  client.on("user-published", onAgoraUserPublished);
+  client.on("user-unpublished", onAgoraUserUnpublished);
 }
 
 function createLocalClient() {
@@ -113,31 +113,6 @@ async function onJoinClick() {
   renderUserId(state);
 }
 
-async function onPublishClick() {
-  if (!state.client) {
-    throw new Error("Client must be ready");
-  }
-  // Create an audio track from the audio sampled by a microphone.
-  const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-  // Publish the local audio track to the channel.
-  await state.client.publish([localAudioTrack]);
-
-  state.localAudioTrack = localAudioTrack;
-  state.published = true;
-  renderButtons(state);
-}
-
-async function onUnpublishClick() {
-  if (!state.client) {
-    throw new Error("Client must be ready");
-  }
-
-  await state.client.unpublish();
-
-  state.published = false;
-  renderButtons(state);
-}
-
 async function onLeaveClick() {
   const { client } = state;
   if (!client) {
@@ -161,6 +136,31 @@ async function onLeaveClick() {
   renderButtons(state);
   renderUserId(state);
   renderParticipants(state);
+}
+
+async function onPublishClick() {
+  if (!state.client) {
+    throw new Error("Client must be ready");
+  }
+  // Create an audio track from the audio sampled by a microphone.
+  const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+  // Publish the local audio track to the channel.
+  await state.client.publish([localAudioTrack]);
+
+  state.localAudioTrack = localAudioTrack;
+  state.published = true;
+  renderButtons(state);
+}
+
+async function onUnpublishClick() {
+  if (!state.client) {
+    throw new Error("Client must be ready");
+  }
+
+  await state.client.unpublish();
+
+  state.published = false;
+  renderButtons(state);
 }
 
 /**
