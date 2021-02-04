@@ -49,6 +49,8 @@ const state = {
   participants: new Set(),
   joined: false,
   published: false,
+/** @type {UID|null}*/
+  currentUserId:null,
 };
 
 main();
@@ -59,13 +61,14 @@ function main() {
   createLocalClient();
   startListening();
   renderButtons();
-  renderUserId(null);
+  renderUserId();
   renderParticipants();
 
   querySelector("#join", HTMLButtonElement).onclick = async () => {
     const uid = await joinChannel();
-    renderUserId(String(uid));
     state.joined = true;
+    state.currentUserId = uid;
+    renderUserId();
     renderButtons();
   };
 
@@ -83,9 +86,10 @@ function main() {
 
   querySelector("#leave",HTMLButtonElement).onclick = async () => {
     await leaveCall();
-    renderUserId(null);
     state.joined = false;
     state.published = false;
+    state.currentUserId = null;
+    renderUserId();
     renderButtons();
   };
 }
@@ -189,10 +193,8 @@ function renderButtons() {
   querySelector("#leave", HTMLButtonElement).disabled = !joined;
 }
 
-/**
- * @param {UID | null} uid
- */
-function renderUserId(uid) {
+function renderUserId() {
+  const uid = state.currentUserId;
   querySelector("#userId", Element).textContent = uid ? String(uid) : "-";
 }
 
