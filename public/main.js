@@ -45,12 +45,15 @@ const options = {
 // ----------------------------------------------------------------
 
 const state = {
+  /** @type {UID|null}*/
+  currentUserId: null,
+
+  joined: false,
+
   /** @type {Set<IAgoraRTCRemoteUser>} */
   participants: new Set(),
-  joined: false,
+
   published: false,
-/** @type {UID|null}*/
-  currentUserId:null,
 };
 
 main();
@@ -66,8 +69,8 @@ function main() {
 
   querySelector("#join", HTMLButtonElement).onclick = async () => {
     const uid = await joinChannel();
-    state.joined = true;
     state.currentUserId = uid;
+    state.joined = true;
     renderUserId();
     renderButtons();
   };
@@ -86,9 +89,9 @@ function main() {
 
   querySelector("#leave",HTMLButtonElement).onclick = async () => {
     await leaveCall();
+    state.currentUserId = null;
     state.joined = false;
     state.published = false;
-    state.currentUserId = null;
     renderUserId();
     renderButtons();
   };
