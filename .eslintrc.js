@@ -5,6 +5,16 @@ module.exports = {
   extends: "./node_modules/@ginpei/eslintrc/.eslintrc.js",
   rules: {
     "import/extensions": ["error", "always"],
-    "@typescript-eslint/ban-ts-comment":"warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
   },
+  overrides: [
+    {
+      // enable the rule specifically for TypeScript files
+      files: ["*.ts", "*.tsx"],
+      rules: {
+        "@typescript-eslint/explicit-module-boundary-types": "error",
+      },
+    },
+  ],
 };
