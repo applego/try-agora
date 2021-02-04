@@ -130,7 +130,9 @@ function main() {
   };
 
   querySelector("#publish", HTMLButtonElement).onclick = async () => {
-    await publishTracks();
+    const localAudioTrack = await publishTracks();
+
+    state.localAudioTrack = localAudioTrack;
 
     state.published = true;
     renderButtons(state);
@@ -148,6 +150,7 @@ function main() {
 
     state.currentUserId = null;
     state.joined = false;
+    state.localAudioTrack = null;
     state.participants.clear();
     state.published = false;
 
@@ -184,9 +187,11 @@ async function publishTracks() {
     throw new Error("Client must be ready");
   }
   // Create an audio track from the audio sampled by a microphone.
-  state.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+  const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
   // Publish the local audio track to the channel.
-  await state.client.publish([state.localAudioTrack]);
+  await state.client.publish([localAudioTrack]);
+
+  return localAudioTrack;
 }
 
 async function unpublishTracks() {
