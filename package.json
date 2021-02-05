@@ -4,7 +4,8 @@
     "lint": "eslint . && tsc",
     "serve:local": "browser-sync start --watch --no-ui --no-ghost-mode --server tryreact",
     "serve:proxy": "ngrok http 3000",
-    "start": "npm run serve:local"
+    "start": "react-scripts start",
+    "build":"react-scripts build"
   },
   "devDependencies": {
     "@ginpei/eslintrc": "^1.0.0",
