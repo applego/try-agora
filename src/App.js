@@ -136,8 +136,30 @@ function Image(props) {
   );
 }
 
+function Loading() {
+  return (
+    <div>
+      <progress className="progress is-small is-primary" max="100">
+        15%
+      </progress>
+      <progress className="progress is-danger" max="100">
+        30%
+      </progress>
+      <progress className="progress is-medium is-dark" max="100">
+        45%
+      </progress>
+      <progress className="progress is-large is-info" max="100">
+        60%
+      </progress>
+    </div>
+  );
+}
+
 function Gallery(props) {
   const { urls } = props;
+  if (urls == null) {
+    return <Loading />;
+  }
   return (
     <div className="columns is-vcentered is-multiline">
       {urls.map((url) => {
@@ -185,6 +207,7 @@ function Main() {
     "https://images.dog.ceo/breeds/shiba/shiba-8.jpg",
     "https://images.dog.ceo/breeds/shiba/shiba-9.jpg",
   ];
+  // urls = null;
   return (
     <main>
       <section className="section">
