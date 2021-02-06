@@ -5,3 +5,4 @@ yarn-error.log
 
 # project
 public/secrets.js
+public_org/secrets.js
