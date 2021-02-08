@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchImages } from "./api";
 
 function Navbar() {
@@ -203,11 +203,19 @@ function Buttons() {
   );
 }
 
+// type TypeUrls = {
+//   urls: string[];
+// };
+// interface Urls {
+//   urls: string[];
+//   prevState: null
+// }
+
 function Main() {
-  const urls = null;
+  const [urls, setUrls] = useState<any | null>(null); // todo refactor any
   useEffect(() => {
-    fetchImages("shiba", 12).then((urls2) => {
-      console.log(urls2);
+    fetchImages("shiba", 12).then((urls_) => {
+      setUrls(urls_);
     });
   }, []);
   return (
