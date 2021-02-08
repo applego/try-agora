@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fetchImages } from "./api.ts";
+import { fetchImages } from "./api";
 
 function Navbar() {
   return (
@@ -127,7 +127,11 @@ function Participants() {
   );
 }
 
-function Image(props) {
+interface PropsImage {
+  src: string;
+}
+
+function Image(props: PropsImage) {
   return (
     <div className="card">
       <div className="card-image">
@@ -158,14 +162,18 @@ function Loading() {
   );
 }
 
-function Gallery(props) {
+interface PropsGallery {
+  urls: string[] | null;
+}
+
+function Gallery(props: PropsGallery) {
   const { urls } = props;
   if (urls == null) {
     return <Loading />;
   }
   return (
     <div className="columns is-vcentered is-multiline">
-      {urls.map((url) => {
+      {urls.map((url: string) => {
         return (
           <div key={url} className="column is-3">
             <Image src={url} />
@@ -245,7 +253,7 @@ function Footer() {
   );
 }
 
-function App() {
+function App(): JSX.Element {
   return (
     <div>
       <Header />

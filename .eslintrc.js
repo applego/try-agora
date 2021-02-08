@@ -7,6 +7,7 @@ module.exports = {
     "import/extensions": ["error", "always"],
     "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "import/extensions": "off"
   },
   overrides: [
     {
@@ -14,6 +15,7 @@ module.exports = {
       files: ["*.ts", "*.tsx"],
       rules: {
         "@typescript-eslint/explicit-module-boundary-types": "error",
+        "import/extensions": "off"
       },
     },
   ],
