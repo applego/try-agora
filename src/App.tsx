@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent, BaseSyntheticEvent } from "react";
 import { fetchImages } from "./api";
+
+import BreedList from "./dataBreedList";
 
 function Navbar() {
   return (
@@ -93,7 +95,7 @@ function Publish() {
       <button className="button is-warning is-rounded" id="publish">
         🔊 Publish(unmute)
       </button>
-      {/* <button class="button" title="Disabled button" disabled>Disabled</button> */}
+      {/* <button className="button" title="Disabled button" disabled>Disabled</button> */}
     </div>
   );
 }
@@ -162,6 +164,26 @@ function Loading() {
   );
 }
 
+function ImageNotFound() {
+  return (
+    <div>
+      <section className="section is-medium">
+        <div className="container">
+          <div className="columns is-vcentered">
+            <div className="column has-text-centered">
+              <h1 className="title">Image Not Found</h1>
+              <p className="subtitle">Sorry...</p>
+            </div>
+            <div className="column has-text-centered">
+              <img src="./images/White Beauty Collection Logo.jpg" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 interface PropsGallery {
   urls: string[] | null;
 }
@@ -170,6 +192,10 @@ function Gallery(props: PropsGallery) {
   const { urls } = props;
   if (urls == null) {
     return <Loading />;
+  }
+  if (!Array.isArray(urls)) {
+    // alert("urls is not Array");
+    return <ImageNotFound />;
   }
   return (
     <div className="columns is-vcentered is-multiline">
@@ -203,6 +229,61 @@ function Buttons() {
   );
 }
 
+interface PropsBreedSelect {
+  breedList: string[];
+}
+
+function BreedSelect(props: PropsBreedSelect) {
+  return (
+    <select name="breed" defaultValue="shiba">
+      {/* <option value="shiba">Shiba</option>
+                <option value="akita">Akita</option> */}
+      {props.breedList.map((breed, index) => {
+        return (
+          <option key={index.toString()} value={breed}>
+            {breed}
+          </option>
+        );
+      })}
+      ;
+    </select>
+  );
+}
+
+interface PropsForm {
+  onFormSubmit: (str: string) => void;
+}
+
+function Form(props: PropsForm) {
+  function handleSubmit(event: BaseSyntheticEvent) {
+    event.preventDefault();
+    console.log(event);
+    console.log(typeof event);
+
+    const { breed } = event.target.elements;
+    props.onFormSubmit(breed.value);
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div className="field has-addons">
+          <div className="control is-expanded">
+            <div className="select is-fullwidth">
+              <BreedSelect breedList={BreedList} />
+            </div>
+          </div>
+          <div className="control">
+            <button type="submit" className="button is-dark">
+              Reload
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 // type TypeUrls = {
 //   urls: string[];
 // };
@@ -212,12 +293,18 @@ function Buttons() {
 // }
 
 function Main() {
+  const [imageNum, setImageNum] = useState<number>(12);
   const [urls, setUrls] = useState<any | null>(null); // todo refactor any
   useEffect(() => {
-    fetchImages("shiba", 12).then((urls_) => {
+    fetchImages("shiba", imageNum).then((urls_) => {
       setUrls(urls_);
     });
   }, []);
+  function reloadImages(breed: string) {
+    fetchImages(breed, imageNum).then((urls_) => {
+      setUrls(urls_);
+    });
+  }
   return (
     <main>
       <section className="section">
@@ -235,6 +322,12 @@ function Main() {
           <Participants />
         </div>
       </section>
+      <section className="section">
+        <div className="container">
+          <Form onFormSubmit={reloadImages} />
+        </div>
+      </section>
+
       <section className="section">
         <div className="container">
           <Gallery urls={urls} />
